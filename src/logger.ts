@@ -1,8 +1,8 @@
-import debug from 'debug';
+import debug from 'debug'
 
-const packageName = 'optic-express';
+const packageName = 'optic-express'
 
 export default {
-    log: debug(`${packageName}:log`),
-    error: debug(`${packageName}:error`),
+  log: debug(`${packageName}:log`),
+  error: debug(`${packageName}:error`)
 }
