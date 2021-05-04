@@ -1,5 +1,6 @@
 import express from 'express'
 import logger from './logger'
+import ObjectFormat from './object-format'
 import { v4 as uuid } from 'uuid'
 
 interface Options {
@@ -22,39 +23,19 @@ export default (options: Options) => {
             host: hostname,
             method: method,
             path: path,
-            query: {
-              shapeHashV1Base64: null,
-              asJsonString: JSON.stringify(query),
-              asText: null
-            },
-            headers: {
-              shapeHashV1Base64: null,
-              asJsonString: JSON.stringify(headers),
-              asText: null
-            },
+            query:  ObjectFormat(query),
+            headers: ObjectFormat(headers),
             body: {
               contentType: headers['content-type'],
-              value: {
-                shapeHashV1Base64: 'CAASCgoEdGFzaxICCAISEAoKYXNzaWduZWRCeRICCAISDQoHZHVlRGF0ZRICCAISDAoGaXNEb25lEgIIBBIICgJpZBICCAI=',
-                asJsonString: JSON.stringify(body),
-                asText: null
-              }
+              value: ObjectFormat(body),
             }
           },
           response: {
             statusCode: statusCode,
-            headers: {
-              shapeHashV1Base64: null,
-              asJsonString: JSON.stringify(responseHeaders),
-              asText: null
-            },
+            headers: ObjectFormat(responseHeaders),
             body: {
               contentType: 'application/json',
-              value: {
-                shapeHashV1Base64: 'CAASCgoEdGFzaxICCAISEAoKYXNzaWduZWRCeRICCAISDQoHZHVlRGF0ZRICCAISDAoGaXNEb25lEgIIBBIICgJpZBICCAI=',
-                asJsonString: null,
-                asText: null
-              }
+              value: ObjectFormat(''),
             }
           },
           tags: []
