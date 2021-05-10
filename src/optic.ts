@@ -51,7 +51,6 @@ export default class Optic {
     sendToCli (obj: any) {
       logger.log('Optic logging to @useoptic/cli')
       try {
-        logger.log(Optic.cliCommand(this.config.dev))
         const child = spawn(Optic.cliCommand(this.config.dev), ['ingest:stdin'])
         child.stdout.pipe(process.stdout)
         child.stdin.write(JSON.stringify(obj))
