@@ -42,19 +42,20 @@ export default class Optic {
     }
 
     static formatObject (req: any, res: any, hydrate?: HydrateBody) {
-      const httpObj = { http: { } }
+      const httpObj = {
+        http: {
+          response: {},
+          request: {}
+        }
+      }
       if (hydrate && hydrate.request) {
-        httpObj.http = {
-          request: {
-            body: { content: hydrate.request(req) }
-          }
+        httpObj.http.request = {
+          body: { content: hydrate.request(req) }
         }
       }
       if (hydrate && hydrate.response) {
-        httpObj.http = {
-          response: {
-            body: { content: hydrate.response(res) }
-          }
+        httpObj.http.response = {
+          body: { content: hydrate.response(res) }
         }
       }
       formatHttpRequest(httpObj, req)
