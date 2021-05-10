@@ -2,6 +2,7 @@ import commandExists from 'command-exists'
 import Boom from '@hapi/boom'
 import { formatHttpRequest, formatHttpResponse, stringify } from '@elastic/ecs-helpers'
 import logger from './logger'
+import { spawn } from 'child_process'
 
 interface Options {
     capture?: boolean,
@@ -22,7 +23,7 @@ export default class Optic {
     }
 
     static cliCommand (dev: undefined | boolean) {
-      return 'api' + !!dev ? 'dev' : ''
+      return 'api' + ((dev) ? 'dev' : '')
     }
 
     async checkOpticCommand () {
@@ -44,12 +45,20 @@ export default class Optic {
 
     sendToConsole (obj: any) {
       logger.log('Optic logging to terminal')
-      console.log(stringify(obj))
+      console.log(JSON.stringify(obj))
     }
 
     sendToCli (obj: any) {
       logger.log('Optic logging to @useoptic/cli')
-    //   @TODO identify and send to optic thread
+      try {
+        logger.log(Optic.cliCommand(this.config.dev))
+        const child = spawn(Optic.cliCommand(this.config.dev), ['ingest:stdin'])
+        child.stdout.pipe(process.stdout)
+        child.stdin.write(JSON.stringify(obj))
+        child.stdin.end()
+      } catch (error) {
+        logger.error(error)
+      }
     }
 
     captureHttpRequest (req: any, res: any): void {
