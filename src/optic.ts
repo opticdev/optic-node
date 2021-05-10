@@ -37,7 +37,14 @@ export default class Optic {
     }
 
     static formatObject (req: any, res: any) {
-      const httpObj = {}
+      const httpObj = { http: { } }
+      if (req.body) {
+        httpObj.http = {
+          request: {
+            body: req.body
+          }
+        }
+      }
       formatHttpRequest(httpObj, req)
       formatHttpResponse(httpObj, res)
       return httpObj
