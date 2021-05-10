@@ -11,6 +11,11 @@ interface Options {
     console?: boolean
 }
 
+interface HydrateBody {
+    response?: Function
+    request?: Function
+}
+
 export default class Optic {
     protected config: Options;
 
@@ -36,12 +41,19 @@ export default class Optic {
       return true
     }
 
-    static formatObject (req: any, res: any) {
+    static formatObject (req: any, res: any, hydrate?: HydrateBody) {
       const httpObj = { http: { } }
-      if (req.body) {
+      if (hydrate && hydrate.request) {
         httpObj.http = {
           request: {
-            body: req.body
+            body: { content: hydrate.request(req) }
+          }
+        }
+      }
+      if (hydrate && hydrate.response) {
+        httpObj.http = {
+          response: {
+            body: { content: hydrate.response(res) }
           }
         }
       }
@@ -67,10 +79,10 @@ export default class Optic {
       }
     }
 
-    captureHttpRequest (req: any, res: any): void {
+    captureHttpRequest (req: any, res: any, hydrate?: HydrateBody): void {
       if (this.config.capture) {
         logger.log('Optic logging request')
-        const httpObj = Optic.formatObject(req, res)
+        const httpObj = Optic.formatObject(req, res, hydrate)
         if (this.config.console) this.sendToConsole(httpObj)
         if (this.config.cli) this.sendToCli(httpObj)
       }

@@ -13,7 +13,9 @@ export default (options: Options) => {
     try {
       const optic = new Optic(options)
       res.on('close', () => {
-        optic.captureHttpRequest(req, res)
+        optic.captureHttpRequest(req, res, {
+          request: (req: express.Request) => { return req.body }
+        })
       })
       next()
     } catch (error) {
