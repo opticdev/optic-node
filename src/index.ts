@@ -4,7 +4,8 @@ import Optic from './optic'
 import { PassThrough } from 'stream'
 
 interface Options {
-    capture?: false,
+    cli?: false,
+    console?: false,
     dev?: false,
 }
 

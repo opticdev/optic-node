@@ -5,7 +5,6 @@ import logger from './logger'
 import { spawn } from 'child_process'
 
 interface Options {
-    capture?: boolean,
     dev?: boolean,
     cli?: boolean,
     console?: boolean
@@ -22,9 +21,8 @@ export default class Optic {
     constructor (options: Options) {
       this.config = {}
       this.config.dev = options.dev || false
-      this.config.capture = options.capture || Boolean(process.env.OPTIC_CAPTURE) || false
-      this.config.cli = options.cli || false
-      this.config.console = options.console || false
+      this.config.cli = options.cli || Boolean(process.env.OPTIC_CLI) || false
+      this.config.console = options.console || Boolean(process.env.OPTIC_CONSOLE) || false
     }
 
     static cliCommand (dev: undefined | boolean) {
@@ -81,7 +79,7 @@ export default class Optic {
     }
 
     captureHttpRequest (req: any, res: any, hydrate?: HydrateBody): void {
-      if (this.config.capture) {
+      if (this.config.cli || this.config.console ) {
         logger.log('Optic logging request')
         const httpObj = Optic.formatObject(req, res, hydrate)
         if (this.config.console) this.sendToConsole(httpObj)
