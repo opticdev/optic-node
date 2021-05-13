@@ -1,8 +1,8 @@
 import commandExists from 'command-exists'
 import Boom from '@hapi/boom'
-import { formatHttpRequest, formatHttpResponse, stringify } from '@elastic/ecs-helpers'
+import { formatHttpRequest, formatHttpResponse } from '@elastic/ecs-helpers'
 import logger from './logger'
-import { spawn } from 'child_process'
+import { spawn } from 'cross-spawn'
 
 interface Options {
     dev?: boolean,
