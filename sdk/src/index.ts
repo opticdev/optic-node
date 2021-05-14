@@ -17,6 +17,7 @@ interface HydrateBody {
 
 export default class Optic {
     protected config: Options;
+    private ingestReadyState = 'READY';
 
     constructor (options: Options) {
       this.config = {}
@@ -71,8 +72,12 @@ export default class Optic {
       try {
         const child = spawn(Optic.cliCommand(this.config.dev), ['ingest:stdin'])
         child.stdout.pipe(process.stdout)
-        child.stdin.write(JSON.stringify(obj))
-        child.stdin.end()
+        child.stdout.on('data', (data) => {
+          if (data.toString('utf8') === this.ingestReadyState) {
+            child.stdin.write(JSON.stringify(obj))
+            child.stdin.end()
+          }
+        })
       } catch (error) {
         logger.error(error)
       }
