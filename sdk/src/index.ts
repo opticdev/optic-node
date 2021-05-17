@@ -85,6 +85,7 @@ export default class Optic {
 
     captureHttpRequest (req: any, res: any, hydrate?: HydrateBody): void {
       if (this.config.cli || this.config.console ) {
+        this.checkOpticCommand();
         logger.log('Optic logging request')
         const httpObj = Optic.formatObject(req, res, hydrate)
         if (this.config.console) this.sendToConsole(httpObj)
