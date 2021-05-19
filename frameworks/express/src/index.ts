@@ -4,7 +4,7 @@ import Optic from '../../../sdk/dist' // Change to the @useoptic/sdk reference w
 import { PassThrough } from 'stream'
 
 interface Options {
-    cli?: false,
+    local?: false,
     console?: false,
     dev?: false,
 }
@@ -13,7 +13,10 @@ export default (options: Options) => {
   logger.log('Optic middleware loaded')
   return async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
-      const optic = new Optic(options)
+      const optic = new Optic({
+        ...options,
+        framework: 'Express'
+      })
       const defaultWrite = res.write.bind(res)
       const defaultEnd = res.end.bind(res)
       const ps = new PassThrough()
