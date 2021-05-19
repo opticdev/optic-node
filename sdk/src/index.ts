@@ -2,7 +2,7 @@ import commandExists from 'command-exists'
 import Boom from '@hapi/boom'
 import { formatHttpRequest, formatHttpResponse } from '@elastic/ecs-helpers'
 import logger from './logger'
-import { spawn } from 'cross-spawn'
+import { exec } from 'child_process'
 import { getUserAgent } from 'universal-user-agent'
 import fetch from 'node-fetch'
 
@@ -21,10 +21,9 @@ interface HydrateBody {
 export default class Optic {
   protected config: Options;
   private userAgent: string;
-  private opticHTTPReceiver = 'OpticHTTPReceiver';
-  private localclihttp: string = '';
+  private opticHTTPReceiver = 'ingestUrl:';
+  private uploadUrlPromise: Promise<string>;
 
-  // @TODO add user agent details - Language/Version/Framework/OpticVersion/PackageVersion
   constructor(options: Options) {
     this.config = {}
     this.config.dev = options.dev || false
@@ -32,9 +31,7 @@ export default class Optic {
     this.config.console = options.console || Boolean(process.env.OPTIC_CONSOLE) || false
     this.userAgent = this.buildUserAgent(options.framework)
 
-    if (this.config.local && this.localclihttp === '') {
-      this.getLocalHttpReceiver()
-    }
+    this.uploadUrlPromise = this.getLocalHttpReceiver()
   }
 
   buildUserAgent(framework?: string): string {
@@ -59,6 +56,7 @@ export default class Optic {
     return true
   }
 
+  // @TODO use tag for user agent
   static formatObject(req: any, res: any, hydrate?: HydrateBody) {
     const httpObj = {
       http: {
@@ -86,37 +84,41 @@ export default class Optic {
     console.log(JSON.stringify(obj))
   }
 
-  async getLocalHttpReceiver() {
-    logger.log('Getting OpticHTTPReceiver endpoint')
-    if (this.checkOpticCommand()) {
-      const child = spawn(Optic.cliCommand(this.config.dev), ['ingest:network'])
-      child.stdout.pipe(process.stdout)
-      child.stdout.on('data', (data: any) => {
-        const line = data.toString('utf8');
-        logger.cli(line)
-        if (line.startsWith(this.opticHTTPReceiver)) {
-          this.localclihttp = line.substr(this.opticHTTPReceiver.length)
-            .trim()
-        }
-      })
-      child.on('error', logger.error)
-    }
+  async getLocalHttpReceiver(): Promise<string> {
+    logger.log('Getting ingestUrl endpoint')
+    return new Promise((accept, rejects) => {
+      if (this.checkOpticCommand()) {
+        exec(`${Optic.cliCommand(this.config.dev)} ingest:ingest-url`, (error, stdout, stderr) => {
+          if(error) {
+            logger.error(error)
+            rejects(error)
+          } else {
+            if(stdout.includes(this.opticHTTPReceiver)) {
+              const positionOfUrl = stdout.indexOf(this.opticHTTPReceiver) + this.opticHTTPReceiver.length
+              const ingestUrl = stdout.substr(positionOfUrl)
+              .trim()
+              accept(ingestUrl)
+            }
+          }
+        })
+      }
+    })
   }
 
   async sendToLocal(obj: any) {
     logger.log('Optic logging to @useoptic/cli')
-    try {
-      if (this.localclihttp !== '') {
-        await this.getLocalHttpReceiver()
-      }
-      await fetch(this.localclihttp, {
-        method: 'post',
-        body: JSON.stringify(obj),
-        headers: { 'Content-Type': 'application/json' },
+    this.uploadUrlPromise
+      .then((uploadUrl) => {
+        try {
+          fetch(uploadUrl, {
+            method: 'post',
+            body: JSON.stringify(obj),
+            headers: { 'Content-Type': 'application/json' },
+          })
+        } catch (error) {
+          logger.error(error)
+        }
       })
-    } catch (error) {
-      logger.error(error)
-    }
   }
 
   captureHttpRequest(req: any, res: any, hydrate?: HydrateBody): void {
