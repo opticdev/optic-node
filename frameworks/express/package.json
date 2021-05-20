@@ -40,10 +40,7 @@
   "dependencies": {
     "@elastic/ecs-helpers": "^1.1.0",
     "@hapi/boom": "^9.1.2",
-    "command-exists": "^1.2.9",
     "debug": "^4.3.1",
-    "express": "^4.17.1",
-    "shape-hash": "^1.0.6",
-    "uuid": "^8.3.2"
+    "express": "^4.17.1"
   }
 }
