@@ -89,7 +89,7 @@ export default class Optic {
   async getLocalHttpReceiver(): Promise<string> {
     logger.log('Getting ingestUrl endpoint')
     return new Promise((accept, rejects) => {
-      if (this.checkOpticCommand() && this.config.local) {
+      if (this.config.local && this.checkOpticCommand()) {
         exec(`${Optic.cliCommand(this.config.dev)} ingest:ingest-url`, (error, stdout, stderr) => {
           if (error) {
             logger.error(error)
