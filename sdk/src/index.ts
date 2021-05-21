@@ -39,7 +39,7 @@ export default class Optic {
   }
 
   static cliCommand(dev: undefined | boolean) {
-    if(dev && process.env.OPTIC_APIDEV_PATH) {
+    if (dev && process.env.OPTIC_APIDEV_PATH) {
       return process.env.OPTIC_APIDEV_PATH
     }
     return 'api' + ((dev) ? 'dev' : '')
@@ -80,8 +80,10 @@ export default class Optic {
   }
 
   sendToConsole(obj: any) {
-    logger.log('Optic logging to terminal')
-    console.log(JSON.stringify(obj))
+    if (this.config.console) {
+      logger.log('Optic logging to terminal')
+      console.log(JSON.stringify(obj))
+    }
   }
 
   async getLocalHttpReceiver(): Promise<string> {
@@ -89,14 +91,14 @@ export default class Optic {
     return new Promise((accept, rejects) => {
       if (this.checkOpticCommand() && this.config.local) {
         exec(`${Optic.cliCommand(this.config.dev)} ingest:ingest-url`, (error, stdout, stderr) => {
-          if(error) {
+          if (error) {
             logger.error(error)
             rejects(error)
           } else {
-            if(stdout.includes(this.opticHTTPReceiver)) {
+            if (stdout.includes(this.opticHTTPReceiver)) {
               const positionOfUrl = stdout.indexOf(this.opticHTTPReceiver) + this.opticHTTPReceiver.length
               const ingestUrl = stdout.substr(positionOfUrl)
-              .trim()
+                .trim()
               accept(ingestUrl)
             }
           }
@@ -114,7 +116,7 @@ export default class Optic {
         try {
           fetch(uploadUrl, {
             method: 'post',
-            body: JSON.stringify(obj),
+            body: JSON.stringify([obj]),
             headers: { 'Content-Type': 'application/json' },
           })
         } catch (error) {
