@@ -5,11 +5,13 @@ import logger from './logger'
 import { exec } from 'child_process'
 import { getUserAgent } from 'universal-user-agent'
 import fetch from 'node-fetch'
+import fs from 'fs'
 
 interface Options {
   dev?: boolean,
   local?: boolean,
   console?: boolean,
+  log?: boolean,
   framework?: string,
 }
 
@@ -29,6 +31,7 @@ export default class Optic {
     this.config.dev = options.dev || false
     this.config.local = options.local || Boolean(process.env.OPTIC_LOCAL) || false
     this.config.console = options.console || Boolean(process.env.OPTIC_CONSOLE) || false
+    this.config.log = options.log || Boolean(process.env.OPTIC_LOG) || false
     this.userAgent = this.buildUserAgent(options.framework)
 
     this.uploadUrlPromise = this.getLocalHttpReceiver()
@@ -86,6 +89,16 @@ export default class Optic {
     }
   }
 
+  sendToLogFile(obj: any) {
+    if (this.config.log) {
+      logger.log('Optic logging to logfile')
+      const logLine = JSON.stringify(obj) + '\n';
+      fs.appendFile('./optic.log', logLine, function (err) {
+        if (err) logger.error(err);
+      });
+    }
+  }
+
   async getLocalHttpReceiver(): Promise<string> {
     logger.log('Getting ingestUrl endpoint')
     return new Promise((accept, rejects) => {
@@ -114,6 +127,7 @@ export default class Optic {
     this.uploadUrlPromise
       .then((uploadUrl) => {
         try {
+          logger.log(`Uploading to ${uploadUrl}`)
           fetch(uploadUrl, {
             method: 'post',
             body: JSON.stringify([obj]),
@@ -131,6 +145,7 @@ export default class Optic {
       logger.log('Optic logging request')
       const httpObj = Optic.formatObject(req, res, hydrate)
       if (this.config.console) this.sendToConsole(httpObj)
+      if (this.config.log) this.sendToLogFile(httpObj)
       if (this.config.local) this.sendToLocal(httpObj)
     }
   }
