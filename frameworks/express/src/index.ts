@@ -6,6 +6,7 @@ import { PassThrough } from 'stream'
 interface Options {
     local?: false,
     console?: false,
+    log?: false,
     dev?: false,
 }
 
