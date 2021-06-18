@@ -8,8 +8,8 @@ import fetch from 'node-fetch'
 import fs from 'fs'
 
 interface Options {
-  dev?: boolean,
-  local?: boolean,
+  enabled?: boolean,
+  uploadUrl?: string,
   console?: boolean,
   log?: boolean,
   framework?: string,
@@ -23,35 +23,27 @@ interface HydrateBody {
 export default class Optic {
   protected config: Options;
   private userAgent: string;
-  private opticHTTPReceiver = 'ingestUrl:';
-  private uploadUrlPromise: Promise<string>;
 
   constructor(options: Options) {
     this.config = {}
-    this.config.dev = options.dev || false
-    this.config.local = options.local || Boolean(process.env.OPTIC_LOCAL) || false
+    this.config.enabled = options.enabled || false
+    this.config.uploadUrl = options.uploadUrl || process.env.OPTIC_LOGGING_URL
     this.config.console = options.console || Boolean(process.env.OPTIC_CONSOLE) || false
     this.config.log = options.log || Boolean(process.env.OPTIC_LOG) || false
     this.userAgent = this.buildUserAgent(options.framework)
-
-    this.uploadUrlPromise = this.getLocalHttpReceiver()
   }
 
   buildUserAgent(framework?: string): string {
     return getUserAgent() + ((framework) ? framework : '')
   }
 
-  static cliCommand(dev: undefined | boolean) {
-    if (dev && process.env.OPTIC_APIDEV_PATH) {
-      return process.env.OPTIC_APIDEV_PATH
-    }
-    return 'api' + ((dev) ? 'dev' : '')
+  static cliCommand() {
+    return 'api'
   }
 
   async checkOpticCommand() {
-    const opticInstalled = await commandExists(Optic.cliCommand(this.config.dev))
+    const opticInstalled = await commandExists(Optic.cliCommand())
     if (!opticInstalled) {
-      // @TODO return as warning
       const errMsg = 'Please install the Optic CLI: https://useoptic.com/docs/'
       logger.error(errMsg)
       throw Boom.failedDependency(errMsg)
@@ -99,54 +91,32 @@ export default class Optic {
     }
   }
 
-  async getLocalHttpReceiver(): Promise<string> {
-    logger.log('Getting ingestUrl endpoint')
-    return new Promise((accept, rejects) => {
-      if (this.config.local && this.checkOpticCommand()) {
-        exec(`${Optic.cliCommand(this.config.dev)} ingest:ingest-url`, (error, stdout, stderr) => {
-          if (error) {
-            logger.error(error)
-            rejects(error)
-          } else {
-            if (stdout.includes(this.opticHTTPReceiver)) {
-              const positionOfUrl = stdout.indexOf(this.opticHTTPReceiver) + this.opticHTTPReceiver.length
-              const ingestUrl = stdout.substr(positionOfUrl)
-                .trim()
-              accept(ingestUrl)
-            }
-          }
-        })
-      } else {
-        accept('')
-      }
-    })
-  }
-
-  async sendToLocal(obj: any) {
+  async sendToUrl(obj: any) {
     logger.log('Optic logging to @useoptic/cli')
-    this.uploadUrlPromise
-      .then((uploadUrl) => {
-        try {
-          logger.log(`Uploading to ${uploadUrl}`)
-          fetch(uploadUrl, {
-            method: 'post',
-            body: JSON.stringify([obj]),
-            headers: { 'Content-Type': 'application/json' },
-          })
-        } catch (error) {
-          logger.error(error)
-        }
+    try {
+      logger.log(`Uploading to ${this.config.uploadUrl}`)
+      fetch(String(this.config.uploadUrl), {
+        method: 'post',
+        body: JSON.stringify([obj]),
+        headers: { 'Content-Type': 'application/json' },
       })
+    } catch (error) {
+      logger.error(error)
+    }
   }
 
   captureHttpRequest(req: any, res: any, hydrate?: HydrateBody): void {
-    if (this.config.local || this.config.console) {
-      this.checkOpticCommand();
+    if (this.config.enabled) {
+      try {
+        this.checkOpticCommand();
+      } catch (error) {
+        console.error(error)
+      }
       logger.log('Optic logging request')
       const httpObj = Optic.formatObject(req, res, hydrate)
       if (this.config.console) this.sendToConsole(httpObj)
       if (this.config.log) this.sendToLogFile(httpObj)
-      if (this.config.local) this.sendToLocal(httpObj)
+      if (this.config.uploadUrl) this.sendToUrl(httpObj)
     }
   }
 }
