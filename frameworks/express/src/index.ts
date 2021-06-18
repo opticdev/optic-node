@@ -4,10 +4,10 @@ import Optic from '../../../sdk/dist' // Change to the @useoptic/sdk reference w
 import { PassThrough } from 'stream'
 
 interface Options {
-    local?: false,
+    enabled?: false,
     console?: false,
     log?: false,
-    dev?: false,
+    uploadUrl?: string,
 }
 
 export default (options: Options) => {

@@ -1,5 +1,0 @@
-name: "optic-express"
-tasks:
-  start:
-     command: "echo \"Setup A Valid Command to Start your API!\""
-     inboundUrl: http://localhost:4000
