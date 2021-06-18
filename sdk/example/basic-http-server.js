@@ -5,7 +5,6 @@ const optic = new Optic({
   enabled: true,
   console: true,
   local: true,
-  url: true,
 })
 const server = http.createServer((req, res) => {
   optic.captureHttpRequest(req, res);
