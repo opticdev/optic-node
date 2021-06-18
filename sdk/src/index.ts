@@ -27,7 +27,7 @@ export default class Optic {
   constructor(options: Options) {
     this.config = {}
     this.config.enabled = options.enabled || false
-    this.config.uploadUrl = options.uploadUrl || process.env.OPTIC_LOGGING_URL
+    this.config.uploadUrl = options.uploadUrl || (process.env.OPTIC_LOGGING_URL ? process.env.OPTIC_LOGGING_URL + 'ecs' : '')
     this.config.console = options.console || Boolean(process.env.OPTIC_CONSOLE) || false
     this.config.log = options.log || Boolean(process.env.OPTIC_LOG) || false
     this.userAgent = this.buildUserAgent(options.framework)
