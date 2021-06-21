@@ -2,12 +2,11 @@ import commandExists from 'command-exists'
 import Boom from '@hapi/boom'
 import { formatHttpRequest, formatHttpResponse } from '@elastic/ecs-helpers'
 import logger from './logger'
-import { exec } from 'child_process'
 import { getUserAgent } from 'universal-user-agent'
 import fetch from 'node-fetch'
 import fs from 'fs'
 
-interface Options {
+interface IOptions {
   enabled?: boolean,
   uploadUrl?: string,
   console?: boolean,
@@ -15,16 +14,16 @@ interface Options {
   framework?: string,
 }
 
-interface HydrateBody {
+interface IHydrateBody {
   response?: Function
   request?: Function
 }
 
 export default class Optic {
-  protected config: Options;
+  protected config: IOptions;
   private userAgent: string;
 
-  constructor(options: Options) {
+  constructor(options: IOptions) {
     this.config = {}
     this.config.enabled = options.enabled || false
     this.config.uploadUrl = options.uploadUrl || (process.env.OPTIC_LOGGING_URL ? process.env.OPTIC_LOGGING_URL + 'ecs' : '')
@@ -52,12 +51,13 @@ export default class Optic {
   }
 
   // @TODO use tag for user agent
-  static formatObject(req: any, res: any, hydrate?: HydrateBody) {
+  static formatObject(req: any, res: any, hydrate?: IHydrateBody) {
     const httpObj = {
       http: {
         response: {},
         request: {}
-      }
+      },
+      optic: {}
     }
     if (hydrate && hydrate.request) {
       httpObj.http.request = {
@@ -105,7 +105,7 @@ export default class Optic {
     }
   }
 
-  captureHttpRequest(req: any, res: any, hydrate?: HydrateBody): void {
+  captureHttpRequest(req: any, res: any, hydrate?: IHydrateBody): void {
     if (this.config.enabled) {
       try {
         this.checkOpticCommand();
@@ -114,6 +114,10 @@ export default class Optic {
       }
       logger.log('Optic logging request')
       const httpObj = Optic.formatObject(req, res, hydrate)
+      // Add optic information
+      httpObj.optic = {
+        user: this.userAgent,
+      }
       if (this.config.console) this.sendToConsole(httpObj)
       if (this.config.log) this.sendToLogFile(httpObj)
       if (this.config.uploadUrl) this.sendToUrl(httpObj)
