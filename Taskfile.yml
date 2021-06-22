@@ -13,6 +13,11 @@ tasks:
     cmds:
       - yarn build
 
+  sdk:test:
+    dir: sdk
+    cmds:
+      - yarn test
+
   #
   # express
   #
