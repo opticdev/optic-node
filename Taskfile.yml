@@ -18,6 +18,11 @@ tasks:
     cmds:
       - yarn test
 
+  sdk:publish:
+    dir: sdk
+    cmds:
+      - echo "todo {{ .TASK }}"
+
   #
   # express
   #
@@ -36,6 +41,10 @@ tasks:
     cmds:
       - yarn test
 
+  express:publish:
+    dir: frameworks/express
+    cmds:
+      - echo "todo {{ .TASK }}"
   #
   # hapi
   #
@@ -53,6 +62,11 @@ tasks:
     dir: frameworks/hapi
     cmds:
       - yarn test
+
+  hapi:publish:
+    dir: frameworks/hapi
+    cmds:
+      - echo "todo {{ .TASK }}"
 
   #
   # utility stuff
@@ -76,3 +90,10 @@ tasks:
       - task: sdk:test
       - task: express:test
       - task: hapi:test
+
+  publish-all:
+    deps: [build-all]
+    cmds:
+      - task: sdk:publish
+      - task: express:publish
+      - task: hapi:publish
