@@ -1,9 +1,9 @@
-name: Build SDK and middlewares
+name: Test SDK and middlewares
 
 on: [push]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

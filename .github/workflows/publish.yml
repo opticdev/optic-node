@@ -1,4 +1,4 @@
-name: Build SDK and middlewares
+name: Publish SDK and middlewares
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
     #   - v*
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
