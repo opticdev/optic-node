@@ -1,9 +1,9 @@
-name: Publish @useoptic/optic-node
+name: Publish @useoptic/express
 
 on:
   push:
-    tags: [sdk/*]
-    paths: [sdk/**]
+    tags: [express/*]
+    paths: [frameworks/express/**]
     branches: [main]
 
 jobs:
@@ -17,4 +17,4 @@ jobs:
       - uses: actions/setup-node@46071b5c7a2e0c34e49c3cb8a0e792e86e18d5ea # v2.1.5
         with:
           node-version: 14
-      - run: task sdk:build sdk:publish
+      - run: task express:build express:publish
