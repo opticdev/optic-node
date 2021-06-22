@@ -1,4 +1,4 @@
-name: Publish SDK and middlewares
+name: Publish Optic middlewares
 
 on:
   push:
