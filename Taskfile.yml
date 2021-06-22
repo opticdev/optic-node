@@ -1,0 +1,66 @@
+version: "3"
+
+tasks:
+  #
+  # sdk
+  #
+  sdk:build:
+    dir: sdk
+    deps:
+      - task: yarn:install
+        vars:
+          PROJECT_DIR: sdk
+    cmds:
+      - yarn build
+
+  #
+  # express
+  #
+  express:build:
+    desc: Build the Extress middleware
+    dir: frameworks/express
+    deps:
+      - task: yarn:install
+        vars:
+          PROJECT_DIR: frameworks/express
+    cmds:
+      - yarn build
+
+  express:test:
+    dir: frameworks/express
+    cmds:
+      - yarn test
+
+  #
+  # hapi
+  #
+  hapi:build:
+    desc: Build the Extress middleware
+    dir: frameworks/hapi
+    deps:
+      - task: yarn:install
+        vars:
+          PROJECT_DIR: frameworks/hapi
+    cmds:
+      - yarn build
+
+  hapi:test:
+    dir: frameworks/hapi
+    cmds:
+      - yarn test
+
+  #
+  # utility stuff
+  #
+  yarn:install:
+    dir: "{{.PROJECT_DIR}}"
+    cmds:
+      - yarn install {{.CLI_ARGS}}
+
+  #
+  # composite tasks
+  #
+  build-all:
+    - task: sdk:build
+    - task: express:build
+    - task: hapi:build
