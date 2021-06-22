@@ -69,3 +69,10 @@ tasks:
     - task: sdk:build
     - task: express:build
     - task: hapi:build
+
+  test-all:
+    deps: [build-all]
+    cmds:
+      - task: sdk:test
+      - task: express:test
+      - task: hapi:test
