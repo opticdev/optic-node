@@ -14,4 +14,5 @@ jobs:
         with:
           node-version: 14
       - run: echo $NODE_ENV
+      - run: echo $CI
       - run: task test-all
