@@ -1,11 +1,10 @@
-name: Publish @useoptic/express
+name: Publish @useoptic/express-middleware
 
-on:
-  push:
-    tags: [express/*]
+on: [create]
 
 jobs:
   publish:
+    if: ${{ startsWith(github.ref, 'refs/tags/express/v') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -16,3 +15,5 @@ jobs:
         with:
           node-version: 14
       - run: task express:build express:publish
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.PUBLISH_NPM_OPTIC_BOT }}

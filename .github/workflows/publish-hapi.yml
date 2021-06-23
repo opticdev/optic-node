@@ -1,11 +1,10 @@
-name: Publish @useoptic/hapi
+name: Publish @useoptic/hapi-middleware
 
-on:
-  push:
-    tags: [hapi/*]
+on: [create]
 
 jobs:
   publish:
+    if: ${{ startsWith(github.ref, 'refs/tags/hapi/v') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -16,3 +15,5 @@ jobs:
         with:
           node-version: 14
       - run: task hapi:build hapi:publish
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.PUBLISH_NPM_OPTIC_BOT }}
