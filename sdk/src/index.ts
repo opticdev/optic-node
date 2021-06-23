@@ -1,10 +1,7 @@
-import commandExists from 'command-exists'
-import Boom from '@hapi/boom'
 import { formatHttpRequest, formatHttpResponse } from '@elastic/ecs-helpers'
 import logger from './logger'
 import { getUserAgent } from 'universal-user-agent'
 import fetch from 'node-fetch'
-import fs from 'fs'
 
 interface IOptions {
   enabled?: boolean,
@@ -34,20 +31,6 @@ export default class Optic {
 
   buildUserAgent(framework?: string): string {
     return getUserAgent() + ((framework) ? framework : '')
-  }
-
-  static cliCommand() {
-    return 'api'
-  }
-
-  async checkOpticCommand() {
-    const opticInstalled = await commandExists(Optic.cliCommand())
-    if (!opticInstalled) {
-      const errMsg = 'Please install the Optic CLI: https://useoptic.com/docs/'
-      logger.error(errMsg)
-      throw Boom.failedDependency(errMsg)
-    }
-    return true
   }
 
   // @TODO use tag for user agent
@@ -81,16 +64,6 @@ export default class Optic {
     }
   }
 
-  sendToLogFile(obj: any) {
-    if (this.config.log) {
-      logger.log('Optic logging to logfile')
-      const logLine = JSON.stringify(obj) + '\n';
-      fs.appendFile('./optic.log', logLine, function (err) {
-        if (err) logger.error(err);
-      });
-    }
-  }
-
   async sendToUrl(obj: any) {
     logger.log('Optic logging to @useoptic/cli')
     try {
@@ -107,11 +80,6 @@ export default class Optic {
 
   captureHttpRequest(req: any, res: any, hydrate?: IHydrateBody): void {
     if (this.config.enabled) {
-      try {
-        this.checkOpticCommand();
-      } catch (error) {
-        console.error(error)
-      }
       logger.log('Optic logging request')
       const httpObj = Optic.formatObject(req, res, hydrate)
       // Add optic information
@@ -119,7 +87,6 @@ export default class Optic {
         user: this.userAgent,
       }
       if (this.config.console) this.sendToConsole(httpObj)
-      if (this.config.log) this.sendToLogFile(httpObj)
       if (this.config.uploadUrl) this.sendToUrl(httpObj)
     }
   }
