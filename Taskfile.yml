@@ -21,7 +21,9 @@ tasks:
   sdk:publish:
     dir: sdk
     cmds:
-      - echo "todo {{ .TASK }}"
+      - task: yarn:publish
+        vars:
+          PROJECT_DIR: sdk
 
   #
   # express
@@ -44,7 +46,10 @@ tasks:
   express:publish:
     dir: frameworks/express
     cmds:
-      - echo "todo {{ .TASK }}"
+      - task: yarn:publish
+        vars:
+          PROJECT_DIR: frameworks/express
+
   #
   # hapi
   #
@@ -66,7 +71,9 @@ tasks:
   hapi:publish:
     dir: frameworks/hapi
     cmds:
-      - echo "todo {{ .TASK }}"
+      - task: yarn:publish
+        vars:
+          PROJECT_DIR: frameworks/hapi
 
   #
   # utility stuff
@@ -75,6 +82,13 @@ tasks:
     dir: "{{.PROJECT_DIR}}"
     cmds:
       - yarn install {{.CLI_ARGS}}
+
+  yarn:publish:
+    dir: "{{.PROJECT_DIR}}"
+    env:
+      NPM_AUTH_TOKEN: "{{.NPM_AUTH_TOKEN}}"
+    cmds:
+      - yarn publish --access=public
 
   #
   # composite tasks
