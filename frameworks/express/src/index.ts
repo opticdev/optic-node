@@ -1,6 +1,6 @@
 import express from 'express'
 import logger from './logger'
-import Optic from '../../../sdk/dist' // Change to the @useoptic/sdk reference when published
+import Optic from '@useoptic/optic-node-sdk'
 import { PassThrough } from 'stream'
 
 interface Options {

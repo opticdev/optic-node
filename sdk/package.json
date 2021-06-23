@@ -1,5 +1,5 @@
 {
-  "name": "@useoptic/optic-node",
+  "name": "@useoptic/optic-node-sdk",
   "version": "0.0.2",
   "description": "Send data to Optic from JS",
   "main": "./dist/index.js",
