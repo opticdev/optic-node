@@ -6,7 +6,7 @@ on:
 
 jobs:
   publish:
-    if: ${{ startsWith(github.ref, 'refs/tags/express/v') }}
+    # if: ${{ startsWith(github.ref, 'refs/tags/express/v') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
