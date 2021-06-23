@@ -15,3 +15,5 @@ jobs:
         with:
           node-version: 14
       - run: task sdk:build sdk:publish
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.PUBLISH_NPM_OPTIC_BOT }}
