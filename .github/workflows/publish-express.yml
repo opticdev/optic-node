@@ -1,6 +1,8 @@
 name: Publish @useoptic/express-middleware
 
-on: [create]
+on:
+  create:
+  push:
 
 jobs:
   publish:
@@ -14,6 +16,6 @@ jobs:
       - uses: actions/setup-node@46071b5c7a2e0c34e49c3cb8a0e792e86e18d5ea # v2.1.5
         with:
           node-version: 14
-      - run: task express:build express:publish
+      - run: task express:build -- --production=false
         env:
           NPM_AUTH_TOKEN: ${{ secrets.PUBLISH_NPM_OPTIC_BOT }}
