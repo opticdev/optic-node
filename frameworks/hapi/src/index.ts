@@ -1,6 +1,6 @@
 import Hapi from '@hapi/hapi'
 import logger from './logger'
-import Optic from '../../../sdk/dist' // Change to the @useoptic/sdk reference when published
+import Optic from '@useoptic/optic-node-sdk' // Change to the @useoptic/sdk reference when published
 
 interface IOptions {
     local?: false,

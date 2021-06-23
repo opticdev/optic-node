@@ -1,0 +1,106 @@
+version: "3"
+
+tasks:
+  #
+  # sdk
+  #
+  sdk:build:
+    dir: sdk
+    deps:
+      - task: yarn:install
+    cmds:
+      - yarn build
+
+  sdk:test:
+    dir: sdk
+    cmds:
+      - yarn test
+
+  sdk:publish:
+    dir: sdk
+    cmds:
+      - task: yarn:publish
+        vars:
+          PROJECT_DIR: sdk
+
+  #
+  # express
+  #
+  express:build:
+    desc: Build the Extress middleware
+    dir: frameworks/express
+    deps:
+      - task: yarn:install
+    cmds:
+      - yarn build
+
+  express:test:
+    dir: frameworks/express
+    cmds:
+      - yarn test
+
+  express:publish:
+    dir: frameworks/express
+    cmds:
+      - task: yarn:publish
+        vars:
+          PROJECT_DIR: frameworks/express
+
+  #
+  # hapi
+  #
+  hapi:build:
+    desc: Build the Extress middleware
+    dir: frameworks/hapi
+    deps:
+      - task: yarn:install
+    cmds:
+      - yarn build
+
+  hapi:test:
+    dir: frameworks/hapi
+    cmds:
+      - yarn test
+
+  hapi:publish:
+    dir: frameworks/hapi
+    cmds:
+      - task: yarn:publish
+        vars:
+          PROJECT_DIR: frameworks/hapi
+
+  #
+  # utility stuff
+  #
+  yarn:install:
+    cmds:
+      - yarn install {{.CLI_ARGS}}
+
+  yarn:publish:
+    dir: "{{.PROJECT_DIR}}"
+    env:
+      NPM_AUTH_TOKEN: "{{.NPM_AUTH_TOKEN}}"
+    cmds:
+      - yarn publish --access=public --non-interactive
+
+  #
+  # composite tasks
+  #
+  build-all:
+    - task: sdk:build
+    - task: express:build
+    - task: hapi:build
+
+  test-all:
+    deps: [build-all]
+    cmds:
+      - task: sdk:test
+      - task: express:test
+      - task: hapi:test
+
+  publish-all:
+    deps: [build-all]
+    cmds:
+      - task: sdk:publish
+      - task: express:publish
+      - task: hapi:publish
