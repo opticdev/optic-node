@@ -3,8 +3,6 @@ name: Publish @useoptic/express
 on:
   push:
     tags: [express/*]
-    paths: [frameworks/express/**]
-    branches: [main]
 
 jobs:
   publish:

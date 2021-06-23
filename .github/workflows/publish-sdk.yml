@@ -3,8 +3,6 @@ name: Publish @useoptic/optic-node
 on:
   push:
     tags: [sdk/*]
-    paths: [sdk/**]
-    branches: [main]
 
 jobs:
   publish:

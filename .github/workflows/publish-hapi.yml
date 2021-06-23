@@ -3,8 +3,6 @@ name: Publish @useoptic/hapi
 on:
   push:
     tags: [hapi/*]
-    paths: [frameworks/hapi/**]
-    branches: [main]
 
 jobs:
   publish:
