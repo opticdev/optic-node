@@ -74,7 +74,7 @@ tasks:
   #
   yarn:install:
     cmds:
-      - yarn install {{.CLI_ARGS}}
+      - yarn install --production=false {{.CLI_ARGS}}
 
   yarn:publish:
     dir: "{{.PROJECT_DIR}}"
