@@ -15,4 +15,5 @@ jobs:
           node-version: 14
       - run: echo $NODE_ENV
       - run: echo $CI
+      - run: yarn --version
       - run: task test-all
