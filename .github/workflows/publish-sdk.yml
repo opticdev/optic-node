@@ -1,12 +1,10 @@
-name: Publish @useoptic/optic-node
+name: Publish @useoptic/optic-node-sdk
 
-on:
-  push:
-    tags: [sdk/*]
-    branches: [main]
+on: [create]
 
 jobs:
   publish:
+    if: ${{ startsWith(github.ref, 'refs/tags/sdk/v') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
