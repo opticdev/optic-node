@@ -88,7 +88,7 @@ tasks:
     env:
       NPM_AUTH_TOKEN: "{{.NPM_AUTH_TOKEN}}"
     cmds:
-      - yarn publish --access=public
+      - yarn publish --access=public --non-interactive
 
   #
   # composite tasks
