@@ -2,16 +2,18 @@
 
 NodeJS middlewares for using Optic within [ExpressJS](https://expressjs.com) and [hapi](https://hapi.dev).
 
-# Publishing via CI
+## Publishing via CI
 
-1. Before merging your PR set the desired version in the respective package.json(s)
-1. After merging your PR to the default branch, tag which package(s) should be published, e.g., `git tag express/v0.0.1`. Note the tag must match the pattern in the corresponding `publish-*.yml` GitHub Action workflow to trigger publishing (`sdk/*`, `express/*`, `hapi/*`)
+1. Before merging your PR, set the desired version in the respective package.json(s)
+1. After merging your PR to the default branch, tag which package(s) should be published, e.g., `git tag express/v0.0.1`. Note the tag must match the pattern in the corresponding `publish-*.yml` GitHub Action workflow to trigger publishing (`sdk/*`, `express/*`, `hapi/*`).
 1. Push your tags, `git push origin main --tags`
 1. Confirm the GHA completes and the new version is published.
 
-Note: The above is currently broken, see https://github.com/opticdev/optic-node/issues/9. For now, stick to the manual publishing steps.
+Step 2 & 3 can be simplified using, `task git:tag-and-push -- express/v0.0.1`. Run this once for each tag you intend to create.
 
-# Publishing manually
+## Publishing manually
+
+Note: Consider publishing through CI :)
 
 0. Have an NPM publish token for the packages to publish
 0. Before merging your PR set the desired version in the respective package.json(s)
@@ -23,3 +25,10 @@ Note: The above is currently broken, see https://github.com/opticdev/optic-node/
     * sdk:publish:          Publish @useoptic/optic-node-sdk
     ```
     By default, the publish task will default to DRY_RUN=true and display the package and version that would be published.
+
+## Removing a tag
+
+```
+git tag -d -- <the tag>
+git push origin -- :refs/tags/<the tag>
+```
