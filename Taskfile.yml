@@ -18,6 +18,8 @@ tasks:
 
   sdk:publish:
     desc: Publish @useoptic/optic-node-sdk
+    summary: |
+
     dir: sdk
     cmds:
       - task: yarn:publish:guard
@@ -85,6 +87,9 @@ tasks:
       NPM_AUTH_TOKEN: "{{.NPM_AUTH_TOKEN}}"
     cmds:
       - yarn publish --access=public --non-interactive
+    preconditions:
+      - sh: "[[ -n $NPM_AUTH_TOKEN ]]"
+        msg: "You must set NPM_AUTH_TOKEN"
 
   yarn:publish:guard:
     dir: "{{.PROJECT_DIR}}"

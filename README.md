@@ -13,11 +13,13 @@ Note: The above is currently broken, see https://github.com/opticdev/optic-node/
 
 # Publishing manually
 
-1. Before merging your PR set the desired version in the respective package.json(s)
-1. After merging, run the task(s) for the packages to publish,
+0. Have an NPM publish token for the packages to publish
+0. Before merging your PR set the desired version in the respective package.json(s)
+0. After merging, run the task(s) for the packages to publish,
     ```
     ➜ task -l | grep publish
     * express:publish:      Publish @useoptic/express-middleware
     * hapi:publish:         Publish @useoptic/hapi-middleware
     * sdk:publish:          Publish @useoptic/optic-node-sdk
     ```
+    By default, the publish task will default to DRY_RUN=true and display the package and version that would be published.
