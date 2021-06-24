@@ -31,7 +31,7 @@ tasks:
     desc: Build the Extress middleware
     dir: frameworks/express
     deps:
-      - task: yarn:install
+      - task: sdk:build
     cmds:
       - yarn build
 
@@ -55,7 +55,7 @@ tasks:
     desc: Build the Extress middleware
     dir: frameworks/hapi
     deps:
-      - task: yarn:install
+      - sdk:build
     cmds:
       - yarn build
 
