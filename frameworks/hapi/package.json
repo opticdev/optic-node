@@ -1,6 +1,6 @@
 {
   "name": "@useoptic/hapi-middleware",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "NodeJS middleware for using Optic within Hapi",
   "main": "./dist/index.js",
   "scripts": {
@@ -18,7 +18,7 @@
   "bugs": {
     "url": "https://github.com/opticdev/optic-node/issues"
   },
-  "homepage": "https://github.com/opticdev/optic-node#readme",
+  "homepage": "https://github.com/opticdev/optic-node/tree/main/frameworks/hapi#readme",
   "devDependencies": {
     "@types/body-parser": "^1.19.0",
     "@types/command-exists": "^1.2.0",
