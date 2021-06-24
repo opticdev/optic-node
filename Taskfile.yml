@@ -96,7 +96,7 @@ tasks:
       DRY_RUN: '{{default "true" .DRY_RUN}}'
     cmds:
       - |
-        if [ $DRY_RUN == true ]
+        if [ $DRY_RUN = true ]
         then
           echo "This will publish $(cat package.json | jq -r '. | .name + "@" + .version'). Set DRY_RUN=false to proceed."
           exit 1
