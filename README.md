@@ -9,9 +9,9 @@ NodeJS middlewares for using Optic within [ExpressJS](https://expressjs.com) and
 1. Push your tags, `git push origin main --tags`
 1. Confirm the GHA completes and the new version is published.
 
-Note: The above is currently broken, see https://github.com/opticdev/optic-node/issues/9. For now, stick to the manual publishing steps.
-
 # Publishing manually
+
+Note: Consider publishing through CI :)
 
 0. Have an NPM publish token for the packages to publish
 0. Before merging your PR set the desired version in the respective package.json(s)
