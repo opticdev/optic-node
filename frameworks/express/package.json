@@ -1,6 +1,6 @@
 {
   "name": "@useoptic/express-middleware",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "NodeJS middleware for using Optic within ExpressJS",
   "main": "./dist/index.js",
   "scripts": {
