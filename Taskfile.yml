@@ -17,9 +17,10 @@ tasks:
       - yarn test
 
   sdk:publish:
+    desc: Publish @useoptic/optic-node-sdk
     dir: sdk
     cmds:
-      - task: yarn:publish
+      - task: yarn:publish:guard
         vars:
           PROJECT_DIR: sdk
 
@@ -40,9 +41,10 @@ tasks:
       - yarn test
 
   express:publish:
+    desc: Publish @useoptic/express-middleware
     dir: frameworks/express
     cmds:
-      - task: yarn:publish
+      - task: yarn:publish:guard
         vars:
           PROJECT_DIR: frameworks/express
 
@@ -63,9 +65,10 @@ tasks:
       - yarn test
 
   hapi:publish:
+    desc: Publish @useoptic/hapi-middleware
     dir: frameworks/hapi
     cmds:
-      - task: yarn:publish
+      - task: yarn:publish:guard
         vars:
           PROJECT_DIR: frameworks/hapi
 
@@ -82,6 +85,22 @@ tasks:
       NPM_AUTH_TOKEN: "{{.NPM_AUTH_TOKEN}}"
     cmds:
       - yarn publish --access=public --non-interactive
+
+  yarn:publish:guard:
+    dir: "{{.PROJECT_DIR}}"
+    silent: true
+    env:
+      DRY_RUN: '{{default "true" .DRY_RUN}}'
+    cmds:
+      - |
+        if [ $DRY_RUN == true ]
+        then
+          echo "This will publish $(cat package.json | jq -r '. | .name + "@" + .version'). Set DRY_RUN=false to proceed."
+          exit 1
+        fi
+      - task: yarn:publish
+        vars:
+          PROJECT_DIR: "{{.PROJECT_DIR}}"
 
   #
   # composite tasks
