@@ -18,8 +18,6 @@ tasks:
 
   sdk:publish:
     desc: Publish @useoptic/optic-node-sdk
-    summary: |
-
     dir: sdk
     cmds:
       - task: yarn:publish:guard
