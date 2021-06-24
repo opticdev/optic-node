@@ -1,4 +1,11 @@
 {
   "private": true,
-  "workspaces": ["sdk", "frameworks/express", "frameworks/hapi"]
+  "workspaces": [
+    "sdk",
+    "frameworks/express",
+    "frameworks/hapi"
+  ],
+  "scripts": {
+    "clean": "find . -maxdepth 3 -type d -name dist | xargs rm -rf && find . -maxdepth 3 -type d -name node_modules | xargs rm -rf"
+  }
 }
