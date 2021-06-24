@@ -105,6 +105,12 @@ tasks:
         vars:
           PROJECT_DIR: "{{.PROJECT_DIR}}"
 
+  git:tag-and-push:
+    - git co main
+    - git pull --rebase
+    - git tag {{.CLI_ARGS}}
+    - git push origin main --tags
+
   #
   # composite tasks
   #
