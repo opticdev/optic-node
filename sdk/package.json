@@ -1,6 +1,6 @@
 {
   "name": "@useoptic/optic-node-sdk",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Send data to Optic from JS",
   "main": "./dist/index.js",
   "scripts": {
