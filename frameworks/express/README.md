@@ -28,7 +28,6 @@ All options are optional for easier configuration in your application
 - `enabled`: `boolean` (defaults to `false`) Programmatically control if capturing data and sending it to Optic
 - `uploadUrl`: `string` (defaults to `process.env.OPTIC_LOGGING_URL`) The URL to Optics capture URL, if left blank it will expect `OPTIC_LOGGING_URL` environment variable set by the Optic CLI
 - `console`: `boolean` (defaults to `false`) Send to stdout/console for debugging
-- `log`:` boolean` (defaults to `false`) Send to an `optic.log` file for debugging
 - `framework`: `string` (defaults to '') Additional information to inform Optic of where it is capturing information
 
 ### Example
