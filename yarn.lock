@@ -379,16 +379,6 @@
     "@typescript-eslint/types" "4.28.0"
     eslint-visitor-keys "^2.0.0"
 
-"@useoptic/optic-node-sdk@0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@useoptic/optic-node-sdk/-/optic-node-sdk-0.0.3.tgz#abd21252beb7096beef37d93e8f1b8c8ce577691"
-  integrity sha512-6FfxvY//ajO8YM9sCLIGXBBeAbJx+Q6XoFG/o05m/as2bx98ths+P1rAT920rd4g0jxBeqqUc36NQPPnFsFLeQ==
-  dependencies:
-    "@elastic/ecs-helpers" "^1.1.0"
-    debug "^4.3.1"
-    node-fetch "^2.6.1"
-    universal-user-agent "^6.0.0"
-
 acorn-jsx@^5.3.1:
   version "5.3.1"
   resolved "https://registry.yarnpkg.com/acorn-jsx/-/acorn-jsx-5.3.1.tgz#fc8661e11b7ac1539c47dbfea2e72b3af34d267b"
