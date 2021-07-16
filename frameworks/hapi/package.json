@@ -1,6 +1,6 @@
 {
   "name": "@useoptic/hapi-middleware",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "NodeJS middleware for using Optic within Hapi",
   "main": "./dist/index.js",
   "scripts": {
