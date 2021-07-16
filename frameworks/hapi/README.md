@@ -4,7 +4,7 @@
 ![NPM](https://img.shields.io/npm/l/@useoptic/hapi-middleware)
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/opticdev/optic-node/publish-hapi)
 
-This module is an [hapi](https://hapi.dev/) middleware using [@useoptic/optic-node-sdk](https://www.npmjs.com/package/@useoptic/optic-node-sdk) to capture and format HTTP data to send to [Optic](https://www.useoptic.com). We have a [list of middleware available for some frameworks](https://github.com/opticdev/optic-node), if we are missing the framework [join our community](https://useoptic.com/docs/community/) and suggest the next framework or develop it with us.
+This module is an [hapi](https://hapi.dev/) plugin using [@useoptic/optic-node-sdk](https://www.npmjs.com/package/@useoptic/optic-node-sdk) to capture and format HTTP data to send to [Optic](https://www.useoptic.com). We have a [list of middleware available for some frameworks](https://github.com/opticdev/optic-node), if we are missing the framework [join our community](https://useoptic.com/docs/community/) and suggest the next framework or develop it with us.
 
 ## Requirements
 
@@ -13,7 +13,7 @@ The module requires `@useoptic/cli` to be installed, instructions on installing 
 ## Intsall
 
 ```sh
-npm install @useoptic/express-middleware
+npm install @useoptic/hapi-middleware
 ```
 
 ## Usage
