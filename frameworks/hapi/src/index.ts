@@ -5,7 +5,6 @@ import Optic from '@useoptic/optic-node-sdk'
 interface IOptions {
   enabled?: false,
   console?: false,
-  log?: false,
   uploadUrl?: string,
 }
 

@@ -7,7 +7,6 @@ interface IOptions {
   enabled?: boolean,
   uploadUrl?: string,
   console?: boolean,
-  log?: boolean,
   framework?: string,
 }
 
@@ -20,21 +19,20 @@ export default class Optic {
   protected config: IOptions;
   private userAgent: string;
 
-  constructor(options: IOptions) {
+  constructor (options: IOptions) {
     this.config = {}
     this.config.enabled = options.enabled || false
     this.config.uploadUrl = options.uploadUrl || (process.env.OPTIC_LOGGING_URL ? process.env.OPTIC_LOGGING_URL + 'ecs' : '')
     this.config.console = options.console || Boolean(process.env.OPTIC_CONSOLE) || false
-    this.config.log = options.log || Boolean(process.env.OPTIC_LOG) || false
     this.userAgent = this.buildUserAgent(options.framework)
   }
 
-  buildUserAgent(framework?: string): string {
-    return getUserAgent() + ((framework) ? framework : '')
+  buildUserAgent (framework?: string): string {
+    return getUserAgent() + ((framework) || '')
   }
 
   // @TODO use tag for user agent
-  static formatObject(req: any, res: any, hydrate?: IHydrateBody) {
+  static formatObject (req: any, res: any, hydrate?: IHydrateBody) {
     const httpObj = {
       http: {
         response: {},
@@ -57,34 +55,34 @@ export default class Optic {
     return httpObj
   }
 
-  sendToConsole(obj: any) {
+  sendToConsole (obj: any) {
     if (this.config.console) {
       logger.log('Optic logging to terminal')
       console.log(JSON.stringify(obj))
     }
   }
 
-  async sendToUrl(obj: any) {
+  async sendToUrl (obj: any) {
     logger.log('Optic logging to @useoptic/cli')
     try {
       logger.log(`Uploading to ${this.config.uploadUrl}`)
       fetch(String(this.config.uploadUrl), {
         method: 'post',
         body: JSON.stringify([obj]),
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' }
       })
     } catch (error) {
       logger.error(error)
     }
   }
 
-  captureHttpRequest(req: any, res: any, hydrate?: IHydrateBody): void {
+  captureHttpRequest (req: any, res: any, hydrate?: IHydrateBody): void {
     if (this.config.enabled) {
       logger.log('Optic logging request')
       const httpObj = Optic.formatObject(req, res, hydrate)
       // Add optic information
       httpObj.optic = {
-        user: this.userAgent,
+        user: this.userAgent
       }
       if (this.config.console) this.sendToConsole(httpObj)
       if (this.config.uploadUrl) this.sendToUrl(httpObj)

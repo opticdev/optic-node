@@ -4,10 +4,9 @@ import Optic from '@useoptic/optic-node-sdk'
 import { PassThrough } from 'stream'
 
 interface Options {
-    enabled?: false,
-    console?: false,
-    log?: false,
-    uploadUrl?: string,
+  enabled?: false,
+  console?: false,
+  uploadUrl?: string,
 }
 
 export default (options: Options) => {
