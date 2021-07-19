@@ -1,6 +1,6 @@
 {
   "name": "@useoptic/express-middleware",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "NodeJS middleware for using Optic within ExpressJS",
   "main": "./dist/index.js",
   "scripts": {
@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@elastic/ecs-helpers": "^1.1.0",
-    "@useoptic/optic-node-sdk": "0.0.4",
+    "@useoptic/optic-node-sdk": "^0.0.5",
     "debug": "^4.3.1"
   },
   "peerDependencies": {
