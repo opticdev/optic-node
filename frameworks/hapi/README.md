@@ -10,7 +10,7 @@ This module is an [hapi](https://hapi.dev/) plugin using [@useoptic/optic-node-s
 
 The module requires `@useoptic/cli` to be installed, instructions on installing it are available [https://www.useoptic.com/docs/](https://www.useoptic.com/docs/).
 
-## Intsall
+## Install
 
 ```sh
 npm install @useoptic/hapi-middleware
@@ -34,7 +34,7 @@ Using a basic [hapi](https://hapi.dev/) server.
 
 ```js
 const Hapi = require('@hapi/hapi')
-const Optic = require('@useoptic/hapi-middleware')
+const { OpticPlugin } = require('@useoptic/hapi-middleware')
 
 const init = async () => {
   const server = Hapi.server({
@@ -43,7 +43,7 @@ const init = async () => {
   })
 
   await server.register({
-    plugin: Optic,
+    plugin: OpticPlugin,
     options: {
       enabled: true
     }

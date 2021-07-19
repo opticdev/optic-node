@@ -9,7 +9,7 @@ interface IOptions {
   uploadUrl?: string,
 }
 
-export default {
+const HapiOpticPlugin = {
   register: (server: Hapi.Server, options: IOptions) => {
     logger.log('Optic plugin loaded')
     const optic = new Optic({
@@ -31,3 +31,6 @@ export default {
   },
   pkg: require('../package.json')
 }
+
+export const OpticPlugin = HapiOpticPlugin
+export default HapiOpticPlugin

@@ -10,7 +10,7 @@ interface Options {
     uploadUrl?: string,
 }
 
-export default (options: Options) => {
+const ExpressOpticMiddleware = (options: Options) => {
   logger.log('Optic middleware loaded')
   return async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
@@ -45,3 +45,6 @@ export default (options: Options) => {
     }
   }
 }
+
+export const OpticMiddleware = ExpressOpticMiddleware
+export default ExpressOpticMiddleware

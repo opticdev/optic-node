@@ -12,7 +12,7 @@ The module requires `@useoptic/cli` to be installed, instructions on installing 
 
 It also requires something like [`body-parser`](https://www.npmjs.com/package/body-parser) to be used as part of the middleware stack to access the body of the HTTP requests within Express
 
-## Intsall
+## Install
 
 ```sh
 npm install @useoptic/express-middleware
@@ -38,13 +38,13 @@ Using a basic [Express](https://expressjs.com/) server proxying to [httpbin](htt
 const express = require('express')
 const bodyParser = require('body-parser')
 const { createProxyMiddleware } = require('http-proxy-middleware');
-const optic = require('@useoptic/express-middleware');
+const { OpticMiddleware } = require('@useoptic/express-middleware');
 
 const app = express()
 const port = 3000
 
 app.use(bodyParser())
-app.use(optic({
+app.use(OpticMiddleware({
     enabled: true,
 }))
 
