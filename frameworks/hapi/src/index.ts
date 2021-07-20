@@ -3,9 +3,9 @@ import logger from './logger'
 import Optic from '@useoptic/optic-node-sdk'
 
 interface IOptions {
-  enabled?: false,
-  console?: false,
-  log?: false,
+  enabled?: boolean,
+  console?: boolean,
+  log?: boolean,
   uploadUrl?: string,
 }
 
