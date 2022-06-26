@@ -38,7 +38,7 @@
   "dependencies": {
     "@elastic/ecs-helpers": "^1.1.0",
     "debug": "^4.3.1",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.7",
     "universal-user-agent": "^6.0.0"
   }
 }
